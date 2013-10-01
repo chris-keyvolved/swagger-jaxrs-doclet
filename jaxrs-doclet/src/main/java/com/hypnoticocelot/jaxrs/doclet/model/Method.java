@@ -8,6 +8,8 @@ public class Method {
     private HttpMethod method;
     private String methodName;
     private List<ApiParameter> apiParameters;
+    private List<String> consumes;
+    private List<String> produces;
     private List<ApiResponseMessage> responseMessages;
     private String firstSentence;
     private String comment;
@@ -18,11 +20,15 @@ public class Method {
     private Method() {
     }
 
-    public Method(HttpMethod method, String methodName, String path, List<ApiParameter> apiParameters, List<ApiResponseMessage> responseMessages, String firstSentence, String comment, String returnType) {
+    public Method(HttpMethod method, String methodName, String path, List<ApiParameter> apiParameters,
+                    List<String> consumes, List<String> produces, List<ApiResponseMessage> responseMessages,
+                    String firstSentence, String comment, String returnType) {
         this.method = method;
         this.methodName = methodName;
         this.path = path;
         this.apiParameters = apiParameters;
+        this.consumes = consumes;
+        this.produces = produces;
         this.responseMessages = responseMessages;
         this.firstSentence = firstSentence;
         this.comment = comment;
@@ -43,6 +49,14 @@ public class Method {
 
     public List<ApiParameter> getParameters() {
         return apiParameters;
+    }
+
+    public List<String> getConsumes() {
+        return consumes;
+    }
+
+    public List<String> getProduces() {
+        return produces;
     }
     
     public List<ApiResponseMessage> getResponseMessages() {
@@ -73,6 +87,8 @@ public class Method {
         return Objects.equal(method, that.method)
                 && Objects.equal(methodName, that.methodName)
                 && Objects.equal(apiParameters, that.apiParameters)
+                && Objects.equal(consumes, that.consumes)
+                && Objects.equal(produces, that.produces)
                 && Objects.equal(responseMessages, that.responseMessages)
                 && Objects.equal(firstSentence, that.firstSentence)
                 && Objects.equal(comment, that.comment)
@@ -82,7 +98,8 @@ public class Method {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(method, methodName, apiParameters, responseMessages, firstSentence, comment, returnType, path);
+        return Objects.hashCode(method, methodName, apiParameters, consumes, produces, responseMessages, firstSentence,
+                        comment, returnType, path);
     }
 
     @Override
@@ -91,6 +108,8 @@ public class Method {
                 .add("method", method)
                 .add("methodName", methodName)
                 .add("apiParameters", apiParameters)
+                .add("consumes", consumes)
+                .add("produces", produces)
                 .add("responseMessages", responseMessages)
                 .add("firstSentence", firstSentence)
                 .add("comment", comment)

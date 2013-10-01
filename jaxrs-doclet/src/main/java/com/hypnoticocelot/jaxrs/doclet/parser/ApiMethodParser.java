@@ -58,6 +58,14 @@ public class ApiMethodParser {
             ));
         }
 
+        // consumes
+        List<String> consumes = new LinkedList<String>();
+        consumes.addAll(new AnnotationParser(methodDoc).getAnnotationValues("javax.ws.rs.Consumes", "value"));
+
+        // produces
+        List<String> produces = new LinkedList<String>();
+        produces.addAll(new AnnotationParser(methodDoc).getAnnotationValues("javax.ws.rs.Produces", "value"));
+        
         // response messages
         Pattern pattern = Pattern.compile("(\\d+) (.+)"); // matches "<code><space><text>"
         List<ApiResponseMessage> responseMessages = new LinkedList<ApiResponseMessage>();
@@ -91,6 +99,8 @@ public class ApiMethodParser {
                 methodDoc.name(),
                 path,
                 parameters,
+                consumes,
+                produces,
                 responseMessages,
                 firstSentences,
                 methodDoc.commentText().replace(firstSentences, ""),
@@ -98,6 +108,7 @@ public class ApiMethodParser {
         );
     }
 
+    
     public Set<Model> models() {
         return models;
     }

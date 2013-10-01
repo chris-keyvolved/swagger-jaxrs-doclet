@@ -14,6 +14,8 @@ public class Operation {
     private String nickname;
     private String responseClass; // void, primitive, complex or a container
     private List<ApiParameter> parameters;
+    private List<String> consumes;
+    private List<String> produces;
     private String summary; // cap at 60 characters for readability in the UI
     private String notes;
 
@@ -29,6 +31,8 @@ public class Operation {
         this.nickname = emptyToNull(method.getMethodName());
         this.responseClass = emptyToNull(AnnotationHelper.typeOf(method.getReturnType()));
         this.parameters = method.getParameters().isEmpty() ? null : method.getParameters();
+        this.consumes = method.getConsumes().isEmpty() ? null : method.getConsumes();
+        this.produces = method.getProduces().isEmpty() ? null : method.getProduces();
         this.responseMessages = method.getResponseMessages().isEmpty() ? null : method.getResponseMessages();
         this.summary = emptyToNull(method.getFirstSentence());
         this.notes = emptyToNull(method.getComment());
@@ -48,6 +52,14 @@ public class Operation {
 
     public List<ApiParameter> getParameters() {
         return parameters;
+    }
+
+    public List<String> getConsumes() {
+        return consumes;
+    }
+
+    public List<String> getProduces() {
+        return produces;
     }
     
     public List<ApiResponseMessage> getResponseMessages() {
@@ -71,6 +83,8 @@ public class Operation {
                 && Objects.equal(nickname, that.nickname)
                 && Objects.equal(responseClass, that.responseClass)
                 && Objects.equal(parameters, that.parameters)
+                && Objects.equal(consumes, that.consumes)
+                && Objects.equal(produces, that.produces)
                 && Objects.equal(responseMessages, that.responseMessages)
                 && Objects.equal(summary, that.summary)
                 && Objects.equal(notes, that.notes);
@@ -78,7 +92,8 @@ public class Operation {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(httpMethod, nickname, responseClass, parameters, responseMessages, summary, notes);
+        return Objects.hashCode(httpMethod, nickname, responseClass, parameters, consumes, produces, responseMessages,
+                        summary, notes);
     }
 
     @Override
@@ -88,6 +103,8 @@ public class Operation {
                 .add("nickname", nickname)
                 .add("responseClass", responseClass)
                 .add("parameters", parameters)
+                .add("consumes", consumes)
+                .add("produces", produces)
                 .add("responseMessages", responseMessages)
                 .add("summary", summary)
                 .add("notes", notes)
